@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import Twitter from 'twitter';
 
-dotenv.config();
+// dotenv.config();
 
 // const client = new Twitter({
 //   client_key: process.env.TWITTER_CLIENT_KEY,
