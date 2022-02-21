@@ -49,7 +49,7 @@ const req = async () => {
         accept: 'application/json',
       },
     });
-    console.log(response.data.data);
+    console.log(response.data.data.text);
   } catch (error) {
     console.log('DANG! ', error);
   }
