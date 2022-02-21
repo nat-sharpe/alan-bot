@@ -20,7 +20,7 @@ console.log(hour);
 console.log(minute);
 
 // 6pm Monday - 4pm Tuesday
-const hours = [0, 2, 4, 14, 15, 18, 21, 22];
+const hours = [0, 2, 4, 14, 16, 18, 21, 22];
 // January = 0
 const currentMonth = 1;
 
@@ -29,8 +29,8 @@ const tweetData = {
 };
 
 const todaysTweets = tweetData[day];
-const index = todaysTweets.indexOf(hour);
-const tweet = tweetData[day].splice(index, index + 1);
+const index = hours.indexOf(hour);
+const tweet = tweetData[day].slice(index, index + 1)[0];
 
 console.log(todaysTweets);
 console.log(index);
