@@ -10,6 +10,7 @@ const client = new Twitter({
 });
 
 const myDate = new Date();
+const month = myDate.getMonth();
 const day = myDate.getDate();
 const hour = myDate.getHours();
 const minute = myDate.getMinutes();
@@ -32,15 +33,20 @@ const todaysTweets = tweetData[day];
 const index = hours.indexOf(hour);
 const tweet = tweetData[day].slice(index, index + 1)[0];
 
-console.log(todaysTweets);
-console.log(index);
-console.log(tweet);
+// if (month === currentMonth && hours.includes(hour) && minute < 5) {
+//   console.log(todaysTweets);
+//   console.log(index);
+//   console.log(tweet);
+// }
 
 // var params = { screen_name: 'nodejs' };
-// client.get('statuses/user_timeline', params, function (error, tweets, response) {
-//   if (!error) {
-//     console.log(tweets);
-//   } else {
-//     console.log(error);
-//   }
-// });
+client.get(
+  'https://api.twitter.com/2/tweets?ids=1472411649034407940',
+  function (error, tweets, response) {
+    if (!error) {
+      console.log(tweets);
+    } else {
+      console.log(error);
+    }
+  }
+);
