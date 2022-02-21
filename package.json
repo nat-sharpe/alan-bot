@@ -1,0 +1,25 @@
+{
+  "name": "alanbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nat-sharpe/alan-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nat-sharpe/alan-bot/issues"
+  },
+  "homepage": "https://github.com/nat-sharpe/alan-bot#readme",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "twitter": "^1.7.1"
+  }
+}
