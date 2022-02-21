@@ -51,7 +51,7 @@ const req = async () => {
     });
     console.log(response.data);
   } catch (error) {
-    console.log('POOP! ', error);
+    console.log('DANG! ', error);
   }
 };
 
