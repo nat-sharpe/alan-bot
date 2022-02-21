@@ -19,7 +19,10 @@ console.log(day);
 console.log(hour);
 console.log(minute);
 
-const hours = [8, 10, 12, 14, 16, 18, 20, 22];
+// 6pm Monday - 4pm Tuesday
+const hours = [0, 2, 4, 14, 15, 18, 20, 22];
+// January = 0
+const currentMonth = 1;
 
 const tweetData = {
   21: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth'],
