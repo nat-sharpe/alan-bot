@@ -78,6 +78,20 @@ const getNewStuff = async () => {
     access: accessToken,
     refresh: newRefreshToken,
   });
+
+  // fetch sample tweet
+  try {
+    const response = await axios.get('https://api.twitter.com/2/tweets?ids=1261326399320715264', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+    });
+    console.log('TWEEEET ', response.data.data[0].text);
+  } catch (error) {
+    console.log('DANG! ', error);
+  }
 };
 
 getNewStuff();
