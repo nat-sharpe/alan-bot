@@ -3,10 +3,9 @@ import axios from 'axios';
 import admin from 'firebase-admin';
 import { initializeApp, applicationDefault, cert } from 'firebase-admin/app';
 import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
+import { readFile } from 'fs/promises';
 
 import { TwitterApi } from 'twitter-api-v2';
-
-const callbackURL = 'https://twitter.com/ai_alan_watts';
 
 dotenv.config();
 
@@ -52,24 +51,31 @@ const twitterClient = new TwitterApi({
   clientSecret: process.env.TWITTER_CLIENT_SECRET,
 });
 
+const devGoogleKey = process.env.SERVICE_ACCOUNT;
+console.log('devGoogleKey ', devGoogleKey);
+const googleKey = devGoogleKey
+  ? devGoogleKey
+  : JSON.parse(await readFile(new URL('./google-key.json', import.meta.url)));
+console.log('googleKey ', googleKey);
+
 const getNewStuff = async () => {
   // Obtain the {refreshToken} from your DB/store
-  const google = JSON.parse(process.env.SERVICE_ACCOUNT);
-  console.log('google ', google);
-  admin.initializeApp({ credential: admin.credential.cert(google) });
+  admin.initializeApp({ credential: admin.credential.cert(googleKey) });
   const db = getFirestore();
   const docRef = db.collection('twitter').doc('tokens');
+  const tokens = await docRef.get();
+  console.log('refresh ', tokens._fieldsProto.refresh.stringValue);
+  const oldRefreshToken = tokens._fieldsProto.refresh.stringValue;
 
-  const oldRefreshToken = process.env.TWITTER_REFRESH_TOKEN;
   const { accessToken, refreshToken: newRefreshToken } = await twitterClient.refreshOAuth2Token(
     oldRefreshToken
   );
   console.log('accessToken ', accessToken);
   console.log('newRefreshToken ', newRefreshToken);
-  // Store refreshed {accessToken} and {newRefreshToken} to remplace the old ones
 
+  // Store refreshed {accessToken} and {newRefreshToken} to replace the old ones
   await docRef.set({
-    access: newRefreshToken,
+    access: accessToken,
     refresh: newRefreshToken,
   });
 };
