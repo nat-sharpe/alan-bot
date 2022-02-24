@@ -54,7 +54,7 @@ const twitterClient = new TwitterApi({
 const devGoogleKey = process.env.SERVICE_ACCOUNT;
 console.log('devGoogleKey ', devGoogleKey);
 const googleKey = devGoogleKey
-  ? devGoogleKey
+  ? JSON.parse(devGoogleKey)
   : JSON.parse(await readFile(new URL('./google-key.json', import.meta.url)));
 console.log('googleKey ', googleKey);
 
