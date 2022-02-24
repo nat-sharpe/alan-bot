@@ -39,6 +39,7 @@ const data = {
 };
 
 console.log('bearer token ', process.env.TWITTER_BEARER_TOKEN);
+console.log('refresh token ', process.env.TWITTER_REFRESH_TOKEN);
 
 // get new access token and refresh token
 const getNewToken = async () => {
