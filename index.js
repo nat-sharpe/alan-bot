@@ -40,7 +40,8 @@ if (month === currentMonth && hours.includes(hour) && minute < 5) {
 }
 
 const data = {
-  text: 'There are no mistakes, so stop worrying and get busy being who you are.',
+  text:
+    'Fear is always born of ignorance. The only thing that can help you is to keep yourself informed, and not to act out of fear',
 };
 
 console.log('bearer token ', process.env.TWITTER_BEARER_TOKEN);
@@ -79,19 +80,14 @@ const getNewStuff = async () => {
     refresh: newRefreshToken,
   });
 
-  // fetch sample tweet
-  try {
-    const response = await axios.get('https://api.twitter.com/2/tweets?ids=1261326399320715264', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'content-type': 'application/json',
-        accept: 'application/json',
-      },
-    });
-    console.log('TWEEEET ', response.data.data[0].text);
-  } catch (error) {
-    console.log('DANG! ', error);
-  }
+  // post tweet!
+  await axios.post('https://api.twitter.com/2/tweets', data, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+  });
 };
 
 getNewStuff();
@@ -113,11 +109,3 @@ getNewStuff();
 // };
 
 // getSampleTweet();
-
-// await axios.post('https://api.twitter.com/2/tweets', data, {
-//   headers: {
-//     Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-//     'content-type': 'application/json',
-//     accept: 'application/json',
-//   },
-// });
