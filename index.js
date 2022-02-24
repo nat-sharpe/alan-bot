@@ -1,6 +1,12 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
-import qs from 'qs';
+import admin from 'firebase-admin';
+import { initializeApp, applicationDefault, cert } from 'firebase-admin/app';
+import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
+
+import { TwitterApi } from 'twitter-api-v2';
+
+const callbackURL = 'https://twitter.com/ai_alan_watts';
 
 dotenv.config();
 
@@ -41,28 +47,38 @@ const data = {
 console.log('bearer token ', process.env.TWITTER_BEARER_TOKEN);
 console.log('refresh token ', process.env.TWITTER_REFRESH_TOKEN);
 
-// get new access token and refresh token
-const getNewToken = async () => {
-  try {
-    const response = await axios({
-      method: 'post',
-      url: 'https://api.twitter.com/2/oauth2/token',
-      data: qs.stringify({
-        refresh_token: process.env.TWITTER_REFRESH_TOKEN,
-        grant_type: 'refresh_token',
-        client_id: process.env.TWITTER_CLIENT_ID,
-      }),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-    console.log(response.data);
-  } catch (error) {
-    console.log('DANG! ', error);
-  }
-};
+const twitterClient = new TwitterApi({
+  clientId: process.env.TWITTER_CLIENT_ID,
+  clientSecret: process.env.TWITTER_CLIENT_SECRET,
+});
 
-getNewToken();
+const google = process.env.SERVICE_ACCOUNT;
+
+console.log('google ', google);
+
+admin.initializeApp(google);
+
+const db = getFirestore();
+
+const docRef = db.collection('twitter').doc('tokens');
+
+await docRef.set({
+  access: 'ding',
+  refresh: 'dong',
+});
+
+// const getNewStuff = async () => {
+//   // Obtain the {refreshToken} from your DB/store
+//   const oldRefreshToken = process.env.TWITTER_REFRESH_TOKEN;
+//   const { accessToken, refreshToken: newRefreshToken } = await twitterClient.refreshOAuth2Token(
+//     oldRefreshToken
+//   );
+//   console.log('accessToken ', accessToken);
+//   console.log('newRefreshToken ', newRefreshToken);
+//   // Store refreshed {accessToken} and {newRefreshToken} to remplace the old ones
+// };
+
+// getNewStuff();
 
 // // test with GET
 // const getSampleTweet = async () => {
