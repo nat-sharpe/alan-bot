@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
+import qs from 'qs';
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ const tweetData = {
 
 const todaysTweets = tweetData[day];
 const index = hours.indexOf(hour);
-const tweet = tweetData[day].slice(index, index + 1)[0];
+const tweet = tweetData[day] ? tweetData[day].slice(index, index + 1)[0] : '';
 
 if (month === currentMonth && hours.includes(hour) && minute < 5) {
   console.log(todaysTweets);
@@ -39,23 +40,46 @@ const data = {
 
 console.log('bearer token ', process.env.TWITTER_BEARER_TOKEN);
 
-// test with GET
-const req = async () => {
+// get new access token and refresh token
+const getNewToken = async () => {
   try {
-    const response = await axios.get('https://api.twitter.com/2/tweets?ids=1261326399320715264', {
+    const response = await axios({
+      method: 'post',
+      url: 'https://api.twitter.com/2/oauth2/token',
+      data: qs.stringify({
+        refresh_token: process.env.TWITTER_REFRESH_TOKEN,
+        grant_type: 'refresh_token',
+        client_id: process.env.TWITTER_CLIENT_ID,
+      }),
       headers: {
-        Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
-        'content-type': 'application/json',
-        accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
-    console.log(response.data.data[0].text);
+    console.log(response.data);
   } catch (error) {
     console.log('DANG! ', error);
   }
 };
 
-req();
+getNewToken();
+
+// // test with GET
+// const getSampleTweet = async () => {
+//   try {
+//     const response = await axios.get('https://api.twitter.com/2/tweets?ids=1261326399320715264', {
+//       headers: {
+//         Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
+//         'content-type': 'application/json',
+//         accept: 'application/json',
+//       },
+//     });
+//     console.log(response.data.data[0].text);
+//   } catch (error) {
+//     console.log('DANG! ', error);
+//   }
+// };
+
+// getSampleTweet();
 
 // await axios.post('https://api.twitter.com/2/tweets', data, {
 //   headers: {
