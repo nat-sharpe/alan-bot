@@ -22,7 +22,7 @@ console.log(minute);
 
 // 6pm Monday - 4pm Tuesday
 // const hours = [0, 2, 4, 14, 16, 18, 20, 22];
-const hours = [15, 17, 19, 21];
+const hours = [9, 11, 13, 15];
 // January = 0
 const currentMonth = 1;
 
@@ -88,7 +88,7 @@ console.log('month === currentMonth ', month === currentMonth);
 console.log('hours.includes(hour) ', hours.includes(hour));
 console.log('minute < 5 ', minute < 5);
 
-if (month === currentMonth && hours.includes(hour) && minute < 15) {
+if (month === currentMonth && hours.includes(hour) && minute < 20) {
   getNewStuff();
 }
 
