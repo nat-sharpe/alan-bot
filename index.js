@@ -28,8 +28,8 @@ const currentMonth = 1;
 
 const tweetData = {
   24: [
-    "If it happens, it happens. There's no point in worrying now.",
     'Well, we are all experiencing the attention seeking and pleasure seeking of men who are drunk on their own power.',
+    "Fear is a projection of the mind. It's like a dark room, with no windows or doors.",
     'The pleasure of victory, the agony of defeat; war breeds gloating and grief, followed by more war',
     'I recommend that you meditate on "impermanence". Nothing lasts forever.',
   ],
@@ -86,9 +86,9 @@ console.log('index ', index);
 console.log('data.text ', data.text);
 console.log('month === currentMonth ', month === currentMonth);
 console.log('hours.includes(hour) ', hours.includes(hour));
-console.log('minute < 5 ', minute < 5);
+// console.log('minute < 5 ', minute < 5);
 
-if (month === currentMonth && hours.includes(hour) && minute < 20) {
+if (month === currentMonth && hours.includes(hour)) {
   getNewStuff();
 }
 
