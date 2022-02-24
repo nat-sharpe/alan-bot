@@ -21,45 +21,36 @@ console.log(hour);
 console.log(minute);
 
 // 6pm Monday - 4pm Tuesday
-const hours = [0, 2, 4, 14, 16, 18, 21, 22];
+// const hours = [0, 2, 4, 14, 16, 18, 20, 22];
+const hours = [15, 17, 19, 21];
 // January = 0
 const currentMonth = 1;
 
 const tweetData = {
-  21: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth'],
+  24: [
+    "If it happens, it happens. There's no point in worrying now.",
+    'Well, we are all experiencing the attention seeking and pleasure seeking of men who are drunk on their own power.',
+    'The pleasure of victory, the agony of defeat; war breeds gloating and grief, followed by more war',
+    'I recommend that you meditate on "impermanence". Nothing lasts forever.',
+  ],
 };
 
-const todaysTweets = tweetData[day];
 const index = hours.indexOf(hour);
-const tweet = tweetData[day] ? tweetData[day].slice(index, index + 1)[0] : '';
-
-if (month === currentMonth && hours.includes(hour) && minute < 5) {
-  console.log(todaysTweets);
-  console.log(index);
-  console.log(tweet);
-}
-
 const data = {
-  text:
-    'Fear is always born of ignorance. The only thing that can help you is to keep yourself informed, and not to act out of fear',
+  text: tweetData[day] ? tweetData[day].slice(index, index + 1)[0] : '',
 };
-
-console.log('bearer token ', process.env.TWITTER_BEARER_TOKEN);
-console.log('refresh token ', process.env.TWITTER_REFRESH_TOKEN);
-
-const twitterClient = new TwitterApi({
-  clientId: process.env.TWITTER_CLIENT_ID,
-  clientSecret: process.env.TWITTER_CLIENT_SECRET,
-});
-
-const devGoogleKey = process.env.SERVICE_ACCOUNT;
-console.log('devGoogleKey ', devGoogleKey);
-const googleKey = devGoogleKey
-  ? JSON.parse(devGoogleKey)
-  : JSON.parse(await readFile(new URL('./google-key.json', import.meta.url)));
-console.log('googleKey ', googleKey);
 
 const getNewStuff = async () => {
+  const twitterClient = new TwitterApi({
+    clientId: process.env.TWITTER_CLIENT_ID,
+    clientSecret: process.env.TWITTER_CLIENT_SECRET,
+  });
+
+  const devGoogleKey = process.env.SERVICE_ACCOUNT;
+  const googleKey = devGoogleKey
+    ? JSON.parse(devGoogleKey)
+    : JSON.parse(await readFile(new URL('./google-key.json', import.meta.url)));
+
   // Obtain the {refreshToken} from your DB/store
   admin.initializeApp({ credential: admin.credential.cert(googleKey) });
   const db = getFirestore();
@@ -80,6 +71,7 @@ const getNewStuff = async () => {
     refresh: newRefreshToken,
   });
 
+  console.log('it woorked!!!! ', data.text);
   // post tweet!
   await axios.post('https://api.twitter.com/2/tweets', data, {
     headers: {
@@ -90,7 +82,15 @@ const getNewStuff = async () => {
   });
 };
 
-getNewStuff();
+console.log('index ', index);
+console.log('data.text ', data.text);
+console.log('month === currentMonth ', month === currentMonth);
+console.log('hours.includes(hour) ', hours.includes(hour));
+console.log('minute < 5 ', minute < 5);
+
+if (month === currentMonth && hours.includes(hour) && minute < 15) {
+  getNewStuff();
+}
 
 // // test with GET
 // const getSampleTweet = async () => {
