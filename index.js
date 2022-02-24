@@ -52,7 +52,7 @@ const twitterClient = new TwitterApi({
   clientSecret: process.env.TWITTER_CLIENT_SECRET,
 });
 
-const google = process.env.SERVICE_ACCOUNT;
+const google = JSON.parse(process.env.SERVICE_ACCOUNT);
 
 console.log('google ', google);
 
