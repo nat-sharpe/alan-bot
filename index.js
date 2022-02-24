@@ -52,33 +52,29 @@ const twitterClient = new TwitterApi({
   clientSecret: process.env.TWITTER_CLIENT_SECRET,
 });
 
-const google = JSON.parse(process.env.SERVICE_ACCOUNT);
+const getNewStuff = async () => {
+  // Obtain the {refreshToken} from your DB/store
+  const google = JSON.parse(process.env.SERVICE_ACCOUNT);
+  console.log('google ', google);
+  admin.initializeApp({ credential: admin.credential.cert(google) });
+  const db = getFirestore();
+  const docRef = db.collection('twitter').doc('tokens');
 
-console.log('google ', google);
+  const oldRefreshToken = process.env.TWITTER_REFRESH_TOKEN;
+  const { accessToken, refreshToken: newRefreshToken } = await twitterClient.refreshOAuth2Token(
+    oldRefreshToken
+  );
+  console.log('accessToken ', accessToken);
+  console.log('newRefreshToken ', newRefreshToken);
+  // Store refreshed {accessToken} and {newRefreshToken} to remplace the old ones
 
-admin.initializeApp(google);
+  await docRef.set({
+    access: newRefreshToken,
+    refresh: newRefreshToken,
+  });
+};
 
-const db = getFirestore();
-
-const docRef = db.collection('twitter').doc('tokens');
-
-await docRef.set({
-  access: 'ding',
-  refresh: 'dong',
-});
-
-// const getNewStuff = async () => {
-//   // Obtain the {refreshToken} from your DB/store
-//   const oldRefreshToken = process.env.TWITTER_REFRESH_TOKEN;
-//   const { accessToken, refreshToken: newRefreshToken } = await twitterClient.refreshOAuth2Token(
-//     oldRefreshToken
-//   );
-//   console.log('accessToken ', accessToken);
-//   console.log('newRefreshToken ', newRefreshToken);
-//   // Store refreshed {accessToken} and {newRefreshToken} to remplace the old ones
-// };
-
-// getNewStuff();
+getNewStuff();
 
 // // test with GET
 // const getSampleTweet = async () => {
