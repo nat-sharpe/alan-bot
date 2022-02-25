@@ -22,7 +22,7 @@ console.log(minute);
 
 // 6pm Monday - 4pm Tuesday
 // const hours = [0, 2, 4, 14, 16, 18, 20, 22];
-// starting at noon central
+// starting at 10AM - 10PM
 const hours = [16, 18, 20, 22, 0, 2, 4];
 // January = 0
 const currentMonth = 1;
