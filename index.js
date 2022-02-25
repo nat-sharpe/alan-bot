@@ -22,22 +22,16 @@ console.log(minute);
 
 // 6pm Monday - 4pm Tuesday
 // const hours = [0, 2, 4, 14, 16, 18, 20, 22];
-const hours = [21, 23, 1, 2];
+// starting at noon central
+const hours = [16, 18, 20, 22, 0, 2, 4];
 // January = 0
 const currentMonth = 1;
 
-const tweetData = {
-  24: [
-    'Well, we are all experiencing the attention seeking and pleasure seeking of men who are drunk on their own power.',
-    "Fear is a projection of the mind. It's like a dark room, with no windows or doors.",
-    'The pleasure of victory, the agony of defeat; war breeds gloating and grief, followed by more war',
-    'I recommend that you meditate on "impermanence". Nothing lasts forever.',
-  ],
-};
-
+const tweetData = JSON.parse(await readFile(new URL('./data.json', import.meta.url)));
+console.log('tweetData ', tweetData);
 const index = hours.indexOf(hour);
 const data = {
-  text: tweetData[day] ? tweetData[day].slice(index, index + 1)[0] : '',
+  text: tweetData[day.toString()] ? tweetData[day.toString()].slice(index, index + 1)[0] : '',
 };
 
 const getNewStuff = async () => {
@@ -71,7 +65,7 @@ const getNewStuff = async () => {
     refresh: newRefreshToken,
   });
 
-  console.log('it woorked!!!! ', data.text);
+  console.log('it wooorked!!!! ', data.text);
   // post tweet!
   await axios.post('https://api.twitter.com/2/tweets', data, {
     headers: {
